@@ -4,7 +4,7 @@
 
 class BigInt{
 
-    public:
+public:
 
     std::string digits;  //Store the magniude
     bool sign;      //Store the sign. True => Negative, False => Positive
@@ -16,4 +16,18 @@ class BigInt{
     BigInt(const BigInt&) = default;    //Default copy constuctor
     BigInt(BigInt&&) = default;         //Default move constructor
     ~BigInt() = default;                //Default destructor
+
+	bool operator > (BigInt b);
+	bool operator < (BigInt b);
+    BigInt absolute();
+    BigInt operator + (BigInt b);
+
+private:
+
+    std::string add (std::string n1, std::string n2);
+    std::string subtract (std::string n1, std::string n2);
+    bool equals (BigInt &n1, BigInt &n2);
+    bool less(BigInt &n1, BigInt &n2);
+    bool greater (BigInt &n1, BigInt &n2);
+
 };
