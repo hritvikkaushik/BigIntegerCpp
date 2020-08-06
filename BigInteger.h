@@ -25,7 +25,12 @@ public:
     bool operator >= (BigInt b);
     BigInt absolute();
     BigInt operator + (BigInt b);
+    BigInt operator - (BigInt b);
     BigInt& operator ++();
+    BigInt operator ++(int);
+	BigInt& operator --(); // prefix
+	BigInt  operator --(int); // postfix
+
 
 private:
 

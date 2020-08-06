@@ -177,8 +177,31 @@ BigInt BigInt::operator + (BigInt b) {
     return sum;
 }
 
+BigInt BigInt::operator - (BigInt b){
+	b.sign = ! b.sign;
+	return (*this) + b;
+}
+
 BigInt& BigInt::operator ++() { // prefix
 	(*this) = (*this) + 1;
 	return (*this);
+}
+
+BigInt BigInt::operator ++(int) { // postfix
+	BigInt temp = (*this);
+	(*this) = (*this) + 1;
+	return temp;
+}
+
+BigInt& BigInt::operator --() {// prefix
+	(*this) = (*this) - 1;
+	return (*this);
+
+}
+
+BigInt BigInt::operator --(int) {// postfix	
+	BigInt temp = (*this);
+	(*this) = (*this) - 1;
+	return temp;
 }
 
