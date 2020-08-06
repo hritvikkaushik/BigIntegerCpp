@@ -323,6 +323,21 @@ BigInt BigInt::operator % (BigInt b)
 	return rem;
 }
 
+BigInt& BigInt::operator *= (BigInt b){
+	(*this) = (*this) * b;
+	return (*this);
+}
+
+BigInt& BigInt::operator /= (BigInt b){
+	(*this) = (*this) / b;
+	return (*this);
+}
+
+BigInt& BigInt::operator %= (BigInt b){
+	(*this) = (*this) % b;
+	return (*this);
+}
+
 std::string BigInt::toString(long long n){
 	std::stringstream ss;
 	std::string temp;

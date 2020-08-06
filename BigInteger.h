@@ -36,6 +36,9 @@ public:
 	BigInt operator * (BigInt b);
 	BigInt operator / (BigInt b);
     BigInt operator % (BigInt b);
+    BigInt& operator *= (BigInt b);
+	BigInt& operator /= (BigInt b);
+	BigInt& operator %= (BigInt b);
     
 private:
 
