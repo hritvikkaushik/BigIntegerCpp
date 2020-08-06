@@ -17,10 +17,15 @@ public:
     BigInt(BigInt&&) = default;         //Default move constructor
     ~BigInt() = default;                //Default destructor
 
+    void operator = (BigInt b);
+    bool operator == (BigInt b);
 	bool operator > (BigInt b);
 	bool operator < (BigInt b);
+    bool operator <= (BigInt b);
+    bool operator >= (BigInt b);
     BigInt absolute();
     BigInt operator + (BigInt b);
+    BigInt& operator ++();
 
 private:
 

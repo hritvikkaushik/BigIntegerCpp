@@ -39,6 +39,31 @@ BigInt::BigInt(int n){
     }
 }
 
+void BigInt::operator = (BigInt b){
+	digits = b.digits;
+	sign = b.sign;
+}
+
+bool BigInt::operator == (BigInt b){
+    return equals(*this,b);
+}
+
+bool BigInt::operator < (BigInt b){
+    return less(*this, b);
+}
+
+bool BigInt::operator > (BigInt b){
+    return greater(*this, b);
+}
+
+bool BigInt:: operator <= (BigInt b){
+    return less(*this,b) || equals(*this,b);
+}
+
+bool BigInt:: operator >= (BigInt b){
+    return greater(*this,b) || equals(*this,b);
+}
+
 std::string BigInt::add(std::string n1, std::string n2){
     std::string sum = (n1.length() > n2.length() ? n1: n2);
     char carry = '0';
@@ -151,3 +176,9 @@ BigInt BigInt::operator + (BigInt b) {
 
     return sum;
 }
+
+BigInt& BigInt::operator ++() { // prefix
+	(*this) = (*this) + 1;
+	return (*this);
+}
+
