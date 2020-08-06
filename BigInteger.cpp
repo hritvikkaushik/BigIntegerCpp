@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
+#include <cmath>
 // #include <stdexcept>
 
 BigInt::BigInt(){
@@ -46,6 +47,10 @@ void BigInt::operator = (BigInt b){
 
 bool BigInt::operator == (BigInt b){
     return equals(*this,b);
+}
+
+bool BigInt::operator != (BigInt b){
+    return !equals(*this,b);
 }
 
 bool BigInt::operator < (BigInt b){
@@ -205,3 +210,134 @@ BigInt BigInt::operator --(int) {// postfix
 	return temp;
 }
 
+BigInt& BigInt::operator += (BigInt b){
+	(*this) = (*this) + b;
+	return (*this);
+}
+
+BigInt& BigInt::operator -= (BigInt b){
+	(*this) = (*this) - b;
+	return (*this);
+}
+
+std::string BigInt::multiply (std::string n1, std::string n2){
+    if(n1.length() > n2.length()) 
+		n1.swap(n2);
+
+	std::string product = "0";
+	for(int i=n1.length()-1; i>=0; --i)
+	{
+		std::string temp = n2;
+		int currentDigit = n1[i]-'0';
+		int carry = 0;
+
+		for(int j=temp.length()-1; j>=0; --j)
+		{
+			temp[j] = ((temp[j]-'0') * currentDigit) + carry;
+
+			if(temp[j] > 9)
+			{
+				carry = (temp[j]/10);
+				temp[j] -= (carry*10);
+			}
+			else
+				carry = 0;
+
+			temp[j] += '0'; // back to string mood
+		}
+
+		if(carry > 0)
+			temp.insert(0, 1, (carry+'0'));
+		
+		temp.append((n1.length()-i-1), '0'); // as like productt by 10, 100, 1000, 10000 and so on
+
+		product = add(product, temp); // O(n)
+	}
+
+	while(product[0] == '0' && product.length()!=1) // erase leading zeros
+		product.erase(0,1);
+
+	return product;
+}
+
+std::pair<std::string, long long> BigInt::divide(std::string n, long long den){
+	long long rem = 0;
+	std::string result; result.resize(10000);
+	
+	for(int indx=0, len = n.length(); indx<len; ++indx){
+		rem = (rem * 10) + (n[indx] - '0');
+		result[indx] = rem / den + '0';
+		rem %= den;
+	}
+	result.resize( n.length() );
+
+	while( result[0] == '0' && result.length() != 1)
+		result.erase(0,1);
+
+	if(result.length() == 0)
+		result = "0";
+
+	return make_pair(result, rem);
+}
+
+BigInt BigInt::operator * (BigInt b){
+	BigInt product;
+
+	product.digits = multiply(digits, b.digits);
+	product.sign = ( sign != b.sign );
+
+	if(product.digits == "0") // avoid (-0) problem
+		product.sign = (false);
+
+	return product;
+}
+
+//Denominator must be within "long long" range
+BigInt BigInt::operator / (BigInt b)
+{
+	long long den = toInt( b.digits );
+	BigInt div;
+
+	div.digits = divide(digits, den).first;
+	div.sign= sign != b.sign ;
+
+	if(div.digits == "0") // avoid negative zero
+		div.sign=false;
+
+	return div;
+}
+
+//Denominator must be within "long long" range
+BigInt BigInt::operator % (BigInt b)
+{
+	long long den = toInt( b.digits );
+
+	BigInt rem;
+	long long rem_int = divide(digits, den).second;
+	rem.digits = toString(rem_int);
+	rem.sign = (this->sign != b.sign );
+
+	if(rem.digits == "0") // avoid negative zero
+		rem.sign =false;
+
+	return rem;
+}
+
+std::string BigInt::toString(long long n){
+	std::stringstream ss;
+	std::string temp;
+
+	ss << n;
+	ss >> temp;
+
+	return temp;
+}
+
+long long BigInt::toInt(std::string s){
+	long long sum = 0;
+
+	for(int i=0; i<s.length(); i++)
+		sum = (sum*10) + (s[i] - '0');
+
+	return sum;
+}
