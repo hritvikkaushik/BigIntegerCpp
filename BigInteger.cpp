@@ -3,8 +3,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
-#include <cmath>
-// #include <stdexcept>
 
 BigInt::BigInt(){
     digits = "0";
